@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+:root {
+  --navy: #061a38;
+  --navy-deep: #020d20;
+  --gold: #e3bd4e;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #fff;
+  color: #0f172a;
+  font-family: Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.nav-link {
+  position: relative;
+  opacity: .72;
+  transition: opacity .2s ease, color .2s ease;
+}
+
+.nav-link:hover {
+  opacity: 1;
+  color: var(--gold);
+}
+
+.hero {
+  isolation: isolate;
+  background-image:
+    linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px),
+    radial-gradient(circle at 80% 10%, rgba(227,189,78,.12), transparent 32%);
+  background-size: 44px 44px, 44px 44px, auto;
+}
+
+.hero-orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.hero-orb-one {
+  width: 380px;
+  height: 380px;
+  right: -170px;
+  top: 110px;
+  border: 1px solid rgba(227,189,78,.12);
+  box-shadow: 0 0 0 70px rgba(227,189,78,.025), 0 0 0 140px rgba(227,189,78,.015);
+}
+
+.hero-orb-two {
+  width: 240px;
+  height: 240px;
+  left: -130px;
+  bottom: 30px;
+  background: rgba(255,255,255,.025);
+}
+
+.faculty-card {
+  animation: float 5s ease-in-out infinite;
+}
+
+.course-card,
+.method-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  background: #fff;
+  padding: 28px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, .04);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.course-card:hover,
+.method-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(181, 138, 21, .35);
+  box-shadow: 0 20px 45px rgba(15, 23, 42, .10);
+}
+
+.topic-card {
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 20px;
+  background: rgba(255,255,255,.045);
+  padding: 20px;
+  transition: transform .2s ease, background .2s ease;
+}
+
+.topic-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255,255,255,.08);
+}
+
+.field {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  padding: 13px 14px;
+  color: #0f172a;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.field:focus {
+  border-color: #b58a15;
+  box-shadow: 0 0 0 3px rgba(181, 138, 21, .12);
+}
+
+.contact-item {
+  display: flex;
+  min-height: 78px;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 20px;
+  background: rgba(255,255,255,.04);
+  padding: 16px;
+  color: #fff;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.075);
+}
+
+.contact-item small {
+  display: block;
+  margin-bottom: 3px;
+  color: rgba(255,255,255,.42);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.contact-item b {
+  display: block;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.contact-icon {
+  display: grid;
+  height: 42px;
+  width: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(227,189,78,.12);
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.whatsapp-fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 60;
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  border-radius: 999px;
+  background: #20c76b;
+  color: #fff;
+  font-size: 24px;
+  box-shadow: 0 12px 35px rgba(0,0,0,.22);
+  transition: transform .2s ease;
+}
+
+.whatsapp-fab:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header a:last-child {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 7px;
+  color: #061a38;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .04em;
+}
