@@ -13,7 +13,7 @@ const courses = [
   {
     number: "02",
     title: "Classes 11th–12th",
-    subjects: "Mathematics • Physics • Chemistry",
+    subjects: "Mathematics • Physics • Chemistry • Biology",
     detail: "Board-focused preparation with deeper concepts and problem-solving skills.",
   },
   {
@@ -39,13 +39,35 @@ const reasons = [
   ["06", "Academic guidance", "Support for school, graduation and postgraduate mathematics."],
 ];
 
-const subjects = [
-  "Algebra", "Calculus", "Geometry", "Trigonometry",
-  "Statistics", "Differential Equations", "Linear Algebra", "Real Analysis",
+const subjectTopics = [
+  {
+    subject: "Mathematics",
+    topics: ["Algebra", "Geometry", "Trigonometry", "Calculus", "etc."],
+  },
+  {
+    subject: "Science",
+    topics: ["Matter & Materials", "Force & Motion", "Light", "Electricity", "etc."],
+  },
+  {
+    subject: "English",
+    topics: ["Grammar", "Writing Skills", "Reading Comprehension", "Vocabulary", "etc."],
+  },
+  {
+    subject: "Physics",
+    topics: ["Mechanics", "Thermodynamics", "Waves", "Electricity & Magnetism", "etc."],
+  },
+  {
+    subject: "Chemistry",
+    topics: ["Atomic Structure", "Chemical Bonding", "Organic Chemistry", "Equilibrium", "etc."],
+  },
+  {
+    subject: "Biology",
+    topics: ["Cell Biology", "Human Physiology", "Genetics", "Ecology", "etc."],
+  },
 ];
 
 const faqs = [
-  ["Which classes are offered?", "Classes 6th–10th: Mathematics, Science and English. Classes 11th–12th: Mathematics, Physics and Chemistry. B.Sc. and M.Sc.: Mathematics."],
+  ["Which classes are offered?", "Classes 6th–10th: Mathematics, Science and English. Classes 11th–12th: Mathematics, Physics, Chemistry and Biology. B.Sc. and M.Sc.: Mathematics."],
   ["Are online classes available?", "Yes. Online and offline learning options are available."],
   ["Can I attend a demo class?", "Yes. Call 7465816143 to enquire about a demo class."],
   ["Do you provide doubt sessions?", "Yes. Doubt-clearing is an important part of our teaching approach."],
@@ -59,8 +81,8 @@ const enquiryOptions = [
   "8th — Mathematics", "8th — Science", "8th — English",
   "9th — Mathematics", "9th — Science", "9th — English",
   "10th — Mathematics", "10th — Science", "10th — English",
-  "11th — Mathematics", "11th — Physics", "11th — Chemistry",
-  "12th — Mathematics", "12th — Physics", "12th — Chemistry",
+  "11th — Mathematics", "11th — Physics", "11th — Chemistry", "11th — Biology",
+  "12th — Mathematics", "12th — Physics", "12th — Chemistry", "12th — Biology",
   "B.Sc. — Mathematics", "M.Sc. — Mathematics",
 ];
 
@@ -90,28 +112,38 @@ export default function Home() {
   const [studentName, setStudentName] = useState("");
   const [studentPhone, setStudentPhone] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
+  const [regClass, setRegClass] = useState("");
+  const [regSubject, setRegSubject] = useState("");
+  const [registrationStatus, setRegistrationStatus] = useState("");
+  const [registrationOpen, setRegistrationOpen] = useState(false);
 
   const enquiryWhatsAppUrl = `https://wa.me/${whatsapp}?text=${encodeURIComponent(
     `Hello Aryabhatta Institute,\n\nI want to enquire about admission.\n\nStudent Name: ${studentName || "Not provided"}\nPhone Number: ${studentPhone || "Not provided"}\nClass / Subject: ${selectedCourse || "Not selected"}\n\nPlease share the course details and demo class information.`
   )}`;
 
-  const handleRegistrationSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleRegistrationSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const message = `Hello Aryabhatta Institute,
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const message = `Hello Aryabhatta Institute,\n\nI want to submit an admission / registration enquiry.\n\nStudent Name: ${data.get("regStudentName") || "Not provided"}\nFather / Guardian Name: ${data.get("regGuardian") || "Not provided"}\nPhone Number: ${data.get("regPhone") || "Not provided"}\nDate of Birth: ${data.get("regDob") || "Not provided"}\nClass / Course: ${data.get("regCourse") || "Not provided"}\nSubject: ${data.get("regSubject") || "Not provided"}\nSchool / College: ${data.get("regInstitution") || "Not provided"}\nLearning Mode: ${data.get("regMode") || "Not provided"}\nAddress: ${data.get("regAddress") || "Not provided"}`;
 
-I want to submit an admission / registration enquiry.
-
-Student Name: ${data.get("regStudentName") || "Not provided"}
-Father / Guardian Name: ${data.get("regGuardian") || "Not provided"}
-Phone Number: ${data.get("regPhone") || "Not provided"}
-Date of Birth: ${data.get("regDob") || "Not provided"}
-Class / Course: ${data.get("regCourse") || "Not provided"}
-Subject: ${data.get("regSubject") || "Not provided"}
-School / College: ${data.get("regInstitution") || "Not provided"}
-Learning Mode: ${data.get("regMode") || "Not provided"}
-Address: ${data.get("regAddress") || "Not provided"}`;
-    window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    setRegistrationStatus("Sending registration...");
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/aryabhatt.institute26143@gmail.com", {
+        method: "POST",
+        headers: { Accept: "application/json" },
+        body: data,
+      });
+      if (!response.ok) throw new Error("Email service error");
+      setRegistrationStatus("Registration submitted successfully. Please check your email/WhatsApp for confirmation.");
+      form.reset();
+      setRegClass("");
+      setRegSubject("");
+      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    } catch {
+      setRegistrationStatus("WhatsApp enquiry is ready. Email delivery may require FormSubmit activation on the first submission.");
+      window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+    }
   };
 
   return (
@@ -265,16 +297,21 @@ Address: ${data.get("regAddress") || "Not provided"}`;
       <section className="bg-[#061a38] px-5 py-20 text-white sm:py-24">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            eyebrow="Mathematics Focus"
-            title="Build mastery, topic by topic."
-            description="A strong command of Mathematics comes from understanding concepts and applying them repeatedly."
+            eyebrow="Important Topics"
+            title="Build mastery, subject by subject."
+            description="Focus on the important topics that create strong fundamentals and exam-ready understanding."
             light
           />
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {subjects.map((subject, index) => (
-              <div key={subject} className="topic-card">
-                <span className="text-[10px] font-black tracking-[0.2em] text-[#e3bd4e]">0{index + 1}</span>
-                <p className="mt-2 font-black">{subject}</p>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {subjectTopics.map((item, index) => (
+              <div key={item.subject} className="topic-card">
+                <span className="text-[10px] font-black tracking-[0.2em] text-[#e3bd4e]">{String(index + 1).padStart(2, "0")}</span>
+                <h3 className="mt-2 text-lg font-black">{item.subject}</h3>
+                <div className="mt-4 space-y-2">
+                  {item.topics.map((topic) => (
+                    <p key={topic} className="text-sm text-white/70">• {topic}</p>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -352,6 +389,9 @@ Address: ${data.get("regAddress") || "Not provided"}`;
               <a href={`tel:${phone}`} className="rounded-full border-2 border-[#061a38]/20 px-7 py-3.5 text-sm font-black text-[#061a38] transition hover:border-[#061a38]/40">
                 Call {phone}
               </a>
+              <button type="button" onClick={() => setRegistrationOpen(true)} className="rounded-full border-2 border-[#061a38]/20 px-7 py-3.5 text-sm font-black text-[#061a38] transition hover:border-[#061a38]/40">
+                Registration Form
+              </button>
             </div>
           </div>
 
@@ -368,8 +408,8 @@ Address: ${data.get("regAddress") || "Not provided"}`;
                 <optgroup label="8th"><option>8th — Mathematics</option><option>8th — Science</option><option>8th — English</option></optgroup>
                 <optgroup label="9th"><option>9th — Mathematics</option><option>9th — Science</option><option>9th — English</option></optgroup>
                 <optgroup label="10th"><option>10th — Mathematics</option><option>10th — Science</option><option>10th — English</option></optgroup>
-                <optgroup label="11th"><option>11th — Mathematics</option><option>11th — Physics</option><option>11th — Chemistry</option></optgroup>
-                <optgroup label="12th"><option>12th — Mathematics</option><option>12th — Physics</option><option>12th — Chemistry</option></optgroup>
+                <optgroup label="11th"><option>11th — Mathematics</option><option>11th — Physics</option><option>11th — Chemistry</option><option>11th — Biology</option></optgroup>
+                <optgroup label="12th"><option>12th — Mathematics</option><option>12th — Physics</option><option>12th — Chemistry</option><option>12th — Biology</option></optgroup>
                 <optgroup label="Higher Education"><option>B.Sc. — Mathematics</option><option>M.Sc. — Mathematics</option></optgroup>
               </select>
               <a href={enquiryWhatsAppUrl} target="_blank" rel="noreferrer" className="rounded-xl bg-[#061a38] px-5 py-3.5 text-center text-sm font-black text-white transition hover:bg-[#0c2a59]">Continue on WhatsApp →</a>
@@ -379,36 +419,41 @@ Address: ${data.get("regAddress") || "Not provided"}`;
         </div>
       </section>
 
-      <section id="registration" className="bg-white px-5 py-20 sm:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:items-start">
-            <div className="lg:sticky lg:top-28">
-              <p className="text-xs font-black uppercase tracking-[0.24em] text-[#a77d0b]">Admission / Registration</p>
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-[#061a38] sm:text-5xl">Secure your admission enquiry.</h2>
-              <p className="mt-5 max-w-xl leading-7 text-slate-600">Fill in the details below. On submission, the complete registration enquiry will open in WhatsApp so the institute can contact you directly.</p>
-              <div className="mt-7 grid gap-3">
-                {['Separate class & subject selection', '11th–12th: Mathematics, Physics & Chemistry', 'Online & Offline learning options', 'Direct WhatsApp submission'].map((item) => (
-                  <div key={item} className="rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-sm font-black text-[#061a38]"><span className="mr-2 text-[#b58a15]">✓</span>{item}</div>
-                ))}
+      {registrationOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#020d20]/75 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="registration-title">
+          <div className="relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-[30px] bg-white shadow-2xl">
+            <button type="button" onClick={() => setRegistrationOpen(false)} aria-label="Close registration form" className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#061a38] text-xl font-black text-white">×</button>
+            <div className="p-5 sm:p-8">
+              <div className="mb-7 pr-12">
+                <p className="text-xs font-black uppercase tracking-[0.24em] text-[#a77d0b]">Admission / Registration</p>
+                <h2 id="registration-title" className="mt-2 text-3xl font-black tracking-tight text-[#061a38] sm:text-4xl">Registration Form</h2>
+                <p className="mt-3 text-sm leading-6 text-slate-600">Fill in the details below. Your registration enquiry will be sent to <a href="mailto:aryabhatt.institute26143@gmail.com" className="font-black text-[#061a38] underline">aryabhatt.institute26143@gmail.com</a>.</p>
               </div>
+              <form onSubmit={handleRegistrationSubmit} className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 sm:p-7">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <input type="hidden" name="_subject" value="Aryabhatta Institute — New Admission / Registration" />
+                  <input type="hidden" name="_captcha" value="false" />
+                  <input type="hidden" name="_template" value="table" />
+                  <div className="sm:col-span-2"><label className="form-label" htmlFor="regStudentName">Student Name *</label><input id="regStudentName" name="regStudentName" required className="field" placeholder="Enter student name" /></div>
+                  <div><label className="form-label" htmlFor="regGuardian">Father / Guardian Name</label><input id="regGuardian" name="regGuardian" className="field" placeholder="Father / guardian name" /></div>
+                  <div><label className="form-label" htmlFor="regPhone">Mobile Number *</label><input id="regPhone" name="regPhone" required className="field" placeholder="10-digit mobile number" inputMode="tel" /></div>
+                  <div><label className="form-label" htmlFor="regDob">Date of Birth</label><input id="regDob" name="regDob" className="field" type="date" /></div>
+                  <div><label className="form-label" htmlFor="regCourse">Class / Course *</label><select id="regCourse" name="regCourse" required className="field" value={regClass} onChange={(event) => { setRegClass(event.target.value); setRegSubject(""); }}><option value="" disabled>Select class / course</option><option>6th</option><option>7th</option><option>8th</option><option>9th</option><option>10th</option><option>11th</option><option>12th</option><option>B.Sc. Mathematics</option><option>M.Sc. Mathematics</option></select></div>
+                  <div><label className="form-label" htmlFor="regSubject">Subject *</label><select id="regSubject" name="regSubject" required className="field" value={regSubject} onChange={(event) => setRegSubject(event.target.value)}><option value="" disabled>Select subject</option>{(regClass === "11th" || regClass === "12th") ? <><option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option></> : regClass === "B.Sc. Mathematics" || regClass === "M.Sc. Mathematics" ? <option>Mathematics</option> : <><option>Mathematics</option><option>Science</option><option>English</option></>}</select></div>
+                  <div><label className="form-label" htmlFor="regInstitution">School / College</label><input id="regInstitution" name="regInstitution" className="field" placeholder="School / college name" /></div>
+                  <div><label className="form-label" htmlFor="regMode">Learning Mode *</label><select id="regMode" name="regMode" required className="field" defaultValue=""><option value="" disabled>Select mode</option><option>Offline</option><option>Online</option><option>Online & Offline</option></select></div>
+                  <div className="sm:col-span-2"><label className="form-label" htmlFor="regAddress">Address</label><textarea id="regAddress" name="regAddress" className="field min-h-24 resize-y" placeholder="Enter address" /></div>
+                  <div className="sm:col-span-2">
+                    <button type="submit" className="w-full rounded-xl bg-[#061a38] px-5 py-4 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#0c2a59]">Submit Registration →</button>
+                    {registrationStatus && <p role="status" className="mt-3 rounded-xl bg-[#e3bd4e]/15 px-4 py-3 text-center text-xs font-bold text-[#061a38]">{registrationStatus}</p>}
+                    <p className="mt-3 text-center text-[11px] text-slate-400">Details go to aryabhatt.institute26143@gmail.com and a WhatsApp enquiry opens automatically.</p>
+                  </div>
+                </div>
+              </form>
             </div>
-            <form onSubmit={handleRegistrationSubmit} className="rounded-[30px] border border-slate-200 bg-slate-50 p-5 shadow-xl shadow-slate-900/5 sm:p-8">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="sm:col-span-2"><label className="form-label" htmlFor="regStudentName">Student Name *</label><input id="regStudentName" name="regStudentName" required className="field" placeholder="Enter student name" /></div>
-                <div><label className="form-label" htmlFor="regGuardian">Father / Guardian Name</label><input id="regGuardian" name="regGuardian" className="field" placeholder="Father / guardian name" /></div>
-                <div><label className="form-label" htmlFor="regPhone">Mobile Number *</label><input id="regPhone" name="regPhone" required className="field" placeholder="10-digit mobile number" inputMode="tel" /></div>
-                <div><label className="form-label" htmlFor="regDob">Date of Birth</label><input id="regDob" name="regDob" className="field" type="date" /></div>
-                <div><label className="form-label" htmlFor="regCourse">Class / Course *</label><select id="regCourse" name="regCourse" required className="field" defaultValue=""><option value="" disabled>Select class / course</option><option>6th</option><option>7th</option><option>8th</option><option>9th</option><option>10th</option><option>11th</option><option>12th</option><option>B.Sc. Mathematics</option><option>M.Sc. Mathematics</option></select></div>
-                <div><label className="form-label" htmlFor="regSubject">Subject *</label><select id="regSubject" name="regSubject" required className="field" defaultValue=""><option value="" disabled>Select subject</option><option>Mathematics</option><option>Science</option><option>English</option><option>Physics</option><option>Chemistry</option></select></div>
-                <div><label className="form-label" htmlFor="regInstitution">School / College</label><input id="regInstitution" name="regInstitution" className="field" placeholder="School / college name" /></div>
-                <div><label className="form-label" htmlFor="regMode">Learning Mode *</label><select id="regMode" name="regMode" required className="field" defaultValue=""><option value="" disabled>Select mode</option><option>Offline</option><option>Online</option><option>Online & Offline</option></select></div>
-                <div className="sm:col-span-2"><label className="form-label" htmlFor="regAddress">Address</label><textarea id="regAddress" name="regAddress" className="field min-h-24 resize-y" placeholder="Enter address" /></div>
-                <div className="sm:col-span-2"><button type="submit" className="w-full rounded-xl bg-[#061a38] px-5 py-4 text-sm font-black text-white transition hover:-translate-y-0.5 hover:bg-[#0c2a59]">Submit Registration on WhatsApp →</button><p className="mt-3 text-center text-[11px] text-slate-400">Your details will open as a pre-filled WhatsApp message to Aryabhatta Institute.</p></div>
-              </div>
-            </form>
           </div>
         </div>
-      </section>
+      )}
 
       <section id="contact" className="bg-[#04132b] px-5 py-20 text-white sm:py-24">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.2fr_.8fr]">
@@ -428,6 +473,10 @@ Address: ${data.get("regAddress") || "Not provided"}`;
                 <span className="contact-icon">⌖</span>
                 <span><small>Location</small><b>Ward No. 04, Rama Green Colony, Lalpur, Udham Singh Nagar, Uttarakhand – 263153</b></span>
               </div>
+              <a href="mailto:aryabhatt.institute26143@gmail.com" className="contact-item sm:col-span-2">
+                <span className="contact-icon">@</span>
+                <span><small>Email</small><b>aryabhatt.institute26143@gmail.com</b></span>
+              </a>
             </div>
           </div>
           <div className="rounded-[28px] border border-white/10 bg-white/[.05] p-7">
@@ -452,12 +501,14 @@ Address: ${data.get("regAddress") || "Not provided"}`;
           <div>
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#e3bd4e]">Courses</h4>
             <p className="mt-3 text-sm text-white/50">6th–10th • 11th–12th</p>
+            <p className="mt-1 text-sm text-white/50">11th–12th: Maths • Physics • Chemistry • Biology</p>
             <p className="mt-1 text-sm text-white/50">B.Sc. • M.Sc. Mathematics</p>
           </div>
           <div>
             <h4 className="text-xs font-black uppercase tracking-[0.2em] text-[#e3bd4e]">Contact</h4>
             <p className="mt-3 text-sm text-white/50">{phone}</p>
             <p className="mt-1 text-sm text-white/50">Online & Offline Classes Available</p>
+            <p className="mt-1 text-sm text-white/50">aryabhatt.institute26143@gmail.com</p>
           </div>
         </div>
         <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-6 text-xs text-white/30">
