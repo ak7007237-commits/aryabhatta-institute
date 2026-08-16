@@ -197,7 +197,7 @@ export default function Home() {
             <div className="faculty-card mx-auto w-full max-w-[420px] rounded-[30px] border border-white/10 bg-white/[.07] p-3 shadow-2xl shadow-black/20 sm:p-4">
               <div className="relative overflow-hidden rounded-[24px] bg-white">
                 <Image
-                  src="/images/amit-kumar.jpg"
+                  src="/images/amit-kumar.png"
                   alt="Amit Kumar, Director and Main Faculty at Aryabhatta Institute"
                   width={700}
                   height={850}
