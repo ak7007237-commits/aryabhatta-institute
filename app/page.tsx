@@ -118,14 +118,14 @@ export default function Home() {
   const [registrationOpen, setRegistrationOpen] = useState(false);
 
   const enquiryWhatsAppUrl = `https://wa.me/${whatsapp}?text=${encodeURIComponent(
-    `Hello Aryabhatta Institute,\n\nI want to enquire about admission.\n\nStudent Name: ${studentName || "Not provided"}\nPhone Number: ${studentPhone || "Not provided"}\nClass / Subject: ${selectedCourse || "Not selected"}\n\nPlease share the course details and demo class information.`
+    `Hello Aryabhatta Institute of Mathematics and Science,\n\nI want to enquire about admission.\n\nStudent Name: ${studentName || "Not provided"}\nPhone Number: ${studentPhone || "Not provided"}\nClass / Subject: ${selectedCourse || "Not selected"}\n\nPlease share the course details and demo class information.`
   )}`;
 
   const handleRegistrationSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    const message = `Hello Aryabhatta Institute,\n\nI want to submit an admission / registration enquiry.\n\nStudent Name: ${data.get("regStudentName") || "Not provided"}\nFather / Guardian Name: ${data.get("regGuardian") || "Not provided"}\nPhone Number: ${data.get("regPhone") || "Not provided"}\nDate of Birth: ${data.get("regDob") || "Not provided"}\nClass / Course: ${data.get("regCourse") || "Not provided"}\nSubject: ${data.get("regSubject") || "Not provided"}\nSchool / College: ${data.get("regInstitution") || "Not provided"}\nLearning Mode: ${data.get("regMode") || "Not provided"}\nAddress: ${data.get("regAddress") || "Not provided"}`;
+    const message = `Hello Aryabhatta Institute of Mathematics and Science,\n\nI want to submit an admission / registration enquiry.\n\nStudent Name: ${data.get("regStudentName") || "Not provided"}\nFather / Guardian Name: ${data.get("regGuardian") || "Not provided"}\nPhone Number: ${data.get("regPhone") || "Not provided"}\nDate of Birth: ${data.get("regDob") || "Not provided"}\nClass / Course: ${data.get("regCourse") || "Not provided"}\nSubject: ${data.get("regSubject") || "Not provided"}\nSchool / College: ${data.get("regInstitution") || "Not provided"}\nLearning Mode: ${data.get("regMode") || "Not provided"}\nAddress: ${data.get("regAddress") || "Not provided"}`;
 
     setRegistrationStatus("Sending registration...");
     try {
@@ -153,11 +153,24 @@ export default function Home() {
           <a href="#home" className="shrink-0 text-base font-black tracking-tight sm:text-xl">
             ARYABHATTA <span className="text-[#e3bd4e]">INSTITUTE</span>
           </a>
-          <nav className="hidden items-center gap-5 text-[11px] font-black uppercase tracking-wider lg:flex">
-            {["Home", "About", "Courses", "Faculty", "Method", "FAQ", "Registration", "Contact"].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="nav-link">{item}</a>
-            ))}
-          </nav>
+         <nav className="hidden items-center gap-5 text-[11px] font-black uppercase tracking-wider lg:flex">
+  <a href="#home" className="nav-link">Home</a>
+  <a href="#about" className="nav-link">About</a>
+  <a href="#courses" className="nav-link">Courses</a>
+  <a href="#faculty" className="nav-link">Faculty</a>
+  <a href="#method" className="nav-link">Method</a>
+  <a href="#faq" className="nav-link">FAQ</a>
+
+  <button
+    type="button"
+    onClick={() => setRegistrationOpen(true)}
+    className="nav-link"
+  >
+    Registration
+  </button>
+
+  <a href="#contact" className="nav-link">Contact</a>
+</nav>
           <a href="#admission" className="rounded-full bg-[#e3bd4e] px-4 py-2.5 text-xs font-black text-[#061a38] shadow-lg shadow-[#e3bd4e]/10 transition hover:-translate-y-0.5 hover:bg-[#f0d16c]">
             Enquire Now
           </a>
@@ -172,7 +185,7 @@ export default function Home() {
             <span className="inline-flex rounded-full border border-[#e3bd4e]/30 bg-[#e3bd4e]/10 px-4 py-2 text-[11px] font-black uppercase tracking-[0.18em] text-[#f3d56f]">
               Admissions Open • 2026–27
             </span>
-            <p className="mt-7 text-xs font-black uppercase tracking-[0.3em] text-[#e3bd4e]">Aryabhatta Institute</p>
+            <p className="mt-7 text-xs font-black uppercase tracking-[0.3em] text-[#e3bd4e]">Aryabhatta Institute of Mathematics and Science</p>
             <h1 className="mt-4 max-w-3xl text-5xl font-black leading-[.98] tracking-[-0.04em] sm:text-6xl md:text-7xl">
               Learn with <span className="text-[#e3bd4e]">clarity.</span><br />
               Grow with confidence.
@@ -198,7 +211,7 @@ export default function Home() {
               <div className="relative overflow-hidden rounded-[24px] bg-white">
                 <Image
                   src="/images/amit-kumar.png"
-                  alt="Amit Kumar, Director and Main Faculty at Aryabhatta Institute"
+                  alt="Amit Kumar, Director and Main Faculty at Aryabhatta Institute of Mathematics and Science"
                   width={700}
                   height={850}
                   className="h-[410px] w-full object-cover object-top sm:h-[470px]"
@@ -238,7 +251,7 @@ export default function Home() {
           <SectionHeading eyebrow="About the Institute" title="A focused approach to better learning." />
           <div>
             <p className="text-lg leading-8 text-slate-600">
-              Aryabhatta Institute is built around one simple idea: students learn better when concepts are explained clearly, practice is structured and questions are welcomed. Our academic approach combines strong fundamentals with regular assessment and personal guidance.
+              Aryabhatta Institute of Mathematics and Science is built around one simple idea: students learn better when concepts are explained clearly, practice is structured and questions are welcomed. Our academic approach combines strong fundamentals with regular assessment and personal guidance.
             </p>
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
               {["Strong fundamentals", "Individual guidance", "Regular revision", "Exam-oriented practice"].map((item) => (
@@ -380,7 +393,7 @@ export default function Home() {
             <p className="text-xs font-black uppercase tracking-[0.24em] text-[#061a38]/65">Admissions & Enquiry</p>
             <h2 className="mt-4 max-w-2xl text-4xl font-black tracking-tight text-[#061a38] sm:text-5xl">Ready to start learning?</h2>
             <p className="mt-5 max-w-xl text-base leading-7 text-[#061a38]/70">
-              Speak directly with Aryabhatta Institute for course details, demo class information and admission guidance.
+              Speak directly with Aryabhatta Institute of Mathematics and Science for course details, demo class information and admission guidance.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <a href={`https://wa.me/${whatsapp}?text=Hello%20Aryabhatta%20Institute%2C%20I%20want%20to%20enquire%20about%20admission.`} target="_blank" rel="noreferrer" className="rounded-full bg-[#061a38] px-7 py-3.5 text-sm font-black text-white transition hover:-translate-y-0.5">
@@ -431,10 +444,24 @@ export default function Home() {
               </div>
               <form onSubmit={handleRegistrationSubmit} className="rounded-[24px] border border-slate-200 bg-slate-50 p-5 sm:p-7">
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <input type="hidden" name="_subject" value="Aryabhatta Institute — New Admission / Registration" />
-                  <input type="hidden" name="_captcha" value="false" />
+                  <input type="hidden" name="_subject" value="Aryabhatta Institute of Mathematics and Science — New Admission / Registration" />
+                  <input type="hidden" name="_captcha" value="false" /><input
+  type="hidden"
+  name="_autoresponse"
+  value="Thank you for registering with Aryabhatta Institute of Mathematics and Science. Your registration enquiry has been received successfully. Our team will contact you shortly."
+/>
                   <input type="hidden" name="_template" value="table" />
-                  <div className="sm:col-span-2"><label className="form-label" htmlFor="regStudentName">Student Name *</label><input id="regStudentName" name="regStudentName" required className="field" placeholder="Enter student name" /></div>
+                  <div className="sm:col-span-2"><label className="form-label" htmlFor="regStudentName">Student Name *</label><input id="regStudentName" name="regStudentName" required className="field" placeholder="Enter student name" /></div><div>
+  <label className="form-label" htmlFor="regEmail">Student Email *</label>
+  <input
+    id="regEmail"
+    name="email"
+    type="email"
+    required
+    className="field"
+    placeholder="Enter student email"
+  />
+</div>
                   <div><label className="form-label" htmlFor="regGuardian">Father / Guardian Name</label><input id="regGuardian" name="regGuardian" className="field" placeholder="Father / guardian name" /></div>
                   <div><label className="form-label" htmlFor="regPhone">Mobile Number *</label><input id="regPhone" name="regPhone" required className="field" placeholder="10-digit mobile number" inputMode="tel" /></div>
                   <div><label className="form-label" htmlFor="regDob">Date of Birth</label><input id="regDob" name="regDob" className="field" type="date" /></div>
@@ -512,7 +539,7 @@ export default function Home() {
           </div>
         </div>
         <div className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-6 text-xs text-white/30">
-          © 2026 Aryabhatta Institute. All rights reserved.
+          © 2026 Aryabhatta Institute of Mathematics and Science. All rights reserved.
         </div>
       </footer>
 
@@ -520,7 +547,7 @@ export default function Home() {
         href={`https://wa.me/${whatsapp}`}
         target="_blank"
         rel="noreferrer"
-        aria-label="Chat with Aryabhatta Institute on WhatsApp"
+        aria-label="Chat with Aryabhatta Institute of Mathematics and Science on WhatsApp"
         className="whatsapp-fab"
       >
         <span>✆</span>
