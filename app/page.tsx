@@ -116,6 +116,7 @@ export default function Home() {
   const [regSubject, setRegSubject] = useState("");
   const [registrationStatus, setRegistrationStatus] = useState("");
   const [registrationOpen, setRegistrationOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const enquiryWhatsAppUrl = `https://wa.me/${whatsapp}?text=${encodeURIComponent(
     `Hello Aryabhatta Institute of Mathematics and Science,\n\nI want to enquire about admission.\n\nStudent Name: ${studentName || "Not provided"}\nPhone Number: ${studentPhone || "Not provided"}\nClass / Subject: ${selectedCourse || "Not selected"}\n\nPlease share the course details and demo class information.`
@@ -153,24 +154,110 @@ export default function Home() {
           <a href="#home" className="shrink-0 text-base font-black tracking-tight sm:text-xl">
             ARYABHATTA <span className="text-[#e3bd4e]">INSTITUTE</span>
           </a>
-         <nav className="hidden items-center gap-5 text-[11px] font-black uppercase tracking-wider lg:flex">
-  <a href="#home" className="nav-link">Home</a>
-  <a href="#about" className="nav-link">About</a>
-  <a href="#courses" className="nav-link">Courses</a>
-  <a href="#faculty" className="nav-link">Faculty</a>
-  <a href="#method" className="nav-link">Method</a>
-  <a href="#faq" className="nav-link">FAQ</a>
+         <div className="flex items-center gap-3">
+  {/* Desktop Navigation */}
+  <nav className="hidden items-center gap-5 text-[11px] font-black uppercase tracking-wider lg:flex">
+    <a href="#home" className="nav-link">Home</a>
+    <a href="#about" className="nav-link">About</a>
+    <a href="#courses" className="nav-link">Courses</a>
+    <a href="#faculty" className="nav-link">Faculty</a>
+    <a href="#method" className="nav-link">Method</a>
+    <a href="#faq" className="nav-link">FAQ</a>
 
+    <button
+      type="button"
+      onClick={() => setRegistrationOpen(true)}
+      className="nav-link"
+    >
+      Registration
+    </button>
+
+    <a href="#contact" className="nav-link">Contact</a>
+  </nav>
+
+  {/* Mobile Menu Button */}
   <button
     type="button"
-    onClick={() => setRegistrationOpen(true)}
-    className="nav-link"
+    aria-label="Open navigation menu"
+    aria-expanded={mobileMenuOpen}
+    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white lg:hidden"
   >
-    Registration
+    {mobileMenuOpen ? "✕" : "☰"}
   </button>
+</div>
+{mobileMenuOpen && (
+  <div className="border-t border-white/10 bg-[#061a38] px-5 py-5 lg:hidden">
+    <nav className="flex flex-col gap-4">
+      <a
+        href="#home"
+        className="nav-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Home
+      </a>
 
-  <a href="#contact" className="nav-link">Contact</a>
-</nav>
+      <a
+        href="#about"
+        className="nav-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        About
+      </a>
+
+      <a
+        href="#courses"
+        className="nav-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Courses
+      </a>
+
+      <a
+        href="#faculty"
+        className="nav-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Faculty
+      </a>
+
+      <a
+        href="#method"
+        className="nav-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Method
+      </a>
+
+      <a
+        href="#faq"
+        className="nav-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        FAQ
+      </a>
+
+      <button
+        type="button"
+        className="nav-link text-left"
+        onClick={() => {
+          setRegistrationOpen(true);
+          setMobileMenuOpen(false);
+        }}
+      >
+        Registration
+      </button>
+
+      <a
+        href="#contact"
+        className="nav-link"
+        onClick={() => setMobileMenuOpen(false)}
+      >
+        Contact
+      </a>
+    </nav>
+  </div>
+)}
           <a href="#admission" className="rounded-full bg-[#e3bd4e] px-4 py-2.5 text-xs font-black text-[#061a38] shadow-lg shadow-[#e3bd4e]/10 transition hover:-translate-y-0.5 hover:bg-[#f0d16c]">
             Enquire Now
           </a>
